@@ -10,7 +10,7 @@ export * from './resend.js';
 export * from './email-unit.js';
 
 // Main Email Unit
-export { Email } from "./email-unit.js";
+export { Email, VERSION } from "./email-unit.js";
 
 // Types
 export type {

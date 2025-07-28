@@ -1,7 +1,8 @@
 /**
- * Email Unit - Simple, robust email sending following SYNET Unit Architecture
+ * Email Unit - Simple, robust email sending following SYNET Unit Architecture v1.0.6
  * 
- * Following Doctrine v1.0.5: Props contain everything, zero dependencies, teach/learn paradigm
+ * Enhanced with AI tool schemas for intelligent email operations.
+ * Following Doctrine v1.0.6: Props contain everything, zero dependencies, teach/learn paradigm
  */
 
 import {
@@ -14,6 +15,8 @@ import type { IEmail, EmailMessage, EmailResult, EmailProviderType } from "./typ
 import { SMTPEmail, type SMTPConfig } from "./smtp.js";
 import { ResendEmail, type ResendConfig } from "./resend.js";
 
+
+export const VERSION = '1.0.1'
 /**
  * Email provider configuration union
  */
@@ -76,7 +79,7 @@ export class Email extends Unit<EmailProps> implements IEmail {
     const props: EmailProps = {
       dna: createUnitSchema({
         id: "email",
-        version: "1.0.0",
+        version: VERSION,
       }),
       provider,
       providerType: config.type,
@@ -131,7 +134,7 @@ export class Email extends Unit<EmailProps> implements IEmail {
   // ==========================================
 
   /**
-   * TEACH - Provide email capabilities to other units (Doctrine 19: Only native capabilities)
+   * TEACH - Provide email capabilities to other units with AI tool schemas (v1.0.6)
    */
   teach(): TeachingContract {
     return {
@@ -143,6 +146,74 @@ export class Email extends Unit<EmailProps> implements IEmail {
         send: (...args: unknown[]) =>
           this.send(args[0] as EmailMessage),
       },
+      // NEW in v1.0.6: Tool schemas for AI integration
+      tools: {
+        validateEmail: {
+          name: 'validateEmail',
+          description: 'Validate email address format',
+          parameters: {
+            type: 'object',
+            properties: {
+              email: {
+                type: 'string',
+                description: 'Email address to validate (e.g., "user@example.com")'
+              }
+            },
+            required: ['email']
+          }
+        },
+        checkConnection: {
+          name: 'checkConnection',
+          description: 'Test connection to email provider',
+          parameters: {
+            type: 'object',
+            properties: {},
+            required: []
+          }
+        },
+        send: {
+          name: 'send',
+          description: 'Send email message via configured provider',
+          parameters: {
+            type: 'object',
+            properties: {
+              to: {
+                type: 'string',
+                description: 'Recipient email address or comma-separated list'
+              },
+              from: {
+                type: 'string', 
+                description: 'Sender email address'
+              },
+              subject: {
+                type: 'string',
+                description: 'Email subject line'
+              },
+              text: {
+                type: 'string',
+                description: 'Plain text email content (optional)'
+              },
+              html: {
+                type: 'string',
+                description: 'HTML email content (optional)'
+              },
+              cc: {
+                type: 'string',
+                description: 'CC recipients (optional)'
+              },
+              bcc: {
+                type: 'string',
+                description: 'BCC recipients (optional)'
+              },
+              replyTo: {
+                type: 'string',
+                description: 'Reply-to email address (optional)'
+              }
+            },
+            required: ['to', 'from', 'subject']
+          }
+        }
+      }
     };
   }
 
@@ -156,13 +227,13 @@ export class Email extends Unit<EmailProps> implements IEmail {
 
   help(): void {
     console.log(`
-Email Unit - Simple, robust email sending
+📧 Email Unit - Simple, robust email sending (v1.0.6)
 
 Provider: ${this.props.providerType}
-Capabilities:
-  validateEmail - Validate email address format
-  checkConnection - Test provider connection
-  send - Send email message
+Native Capabilities:
+  • validateEmail - Validate email address format
+  • checkConnection - Test provider connection  
+  • send - Send email message
 
 Usage:
   const email = Email.create(config);
@@ -175,8 +246,18 @@ Usage:
     html: '<h1>HTML message</h1>'
   });
 
-When learned by other units:
-  otherUnit.execute('${this.props.dna.id}.send', emailMessage);
+Unit Architecture (learn/teach):
+  otherUnit.learn([email.teach()]);
+  await otherUnit.execute('${this.props.dna.id}.send', emailMessage);
+
+AI Integration (NEW in v1.0.6):
+  const ai = AI.create({ type: 'openai', options: { apiKey: 'sk-...' } });
+  ai.learn([email.teach()]);
+  
+  // AI can now send emails using learned tool schemas
+  const response = await ai.call('Send a welcome email to user@example.com', {
+    useTools: true
+  });
 `);
   }
 

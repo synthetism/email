@@ -15,12 +15,15 @@
    |  `--'  | |  |\   | |  |     |  |           
     \______/  |__| \__| |__|     |__|           
                                                 
-version: 1.0.0                                   
+version: 1.0.1                                   
+```
+Production ready, secure email sending library following Unit Architecture principles.
+
+```bash
+npm i @synet/email
 ```
 
-Zero-dependency, secure email sending library following Unit Architecture principles.
-
-## 🚀 Quick Start
+## Quick Start
 
 ```typescript
 import { Email } from "@synet/email";
@@ -55,7 +58,7 @@ if (result.success) {
 }
 ```
 
-## 📧 Email Adapters
+## Email Adapters
 
 The library provides multiple email adapters for different providers and use cases.
 
@@ -121,9 +124,9 @@ const result = await resend.send({
 });
 ```
 
-## 🧠 Unit Architecture
+## Unit Architecture
 
-SYNET Email follows the Unit Architecture pattern - conscious software components that can teach capabilities to other units and learn from them.
+Email follows the Unit Architecture pattern - conscious software components that can teach capabilities to other units and learn from them.
 
 ### Basic Unit Usage
 
@@ -237,7 +240,7 @@ await marketingEmail.send({
 });
 ```
 
-## 📝 API Reference
+##  API Reference
 
 ### Email Unit
 
@@ -286,7 +289,7 @@ interface EmailResult {
 }
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### SMTP Configuration
 
@@ -313,7 +316,7 @@ interface ResendConfig {
 }
 ```
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run all tests
@@ -326,7 +329,7 @@ npm run test:coverage
 npm run test:watch
 ```
 
-## 🎯 Examples
+## Examples
 
 ### AWS SES Example
 
@@ -373,7 +376,7 @@ const email = Email.create({
 });
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 This library follows the SYNET Unit Architecture principles:
 
@@ -383,16 +386,16 @@ This library follows the SYNET Unit Architecture principles:
 - **Immutable Evolution**: Units evolve to new versions rather than mutating
 - **Capability-Based Composition**: Acquire capabilities through learning, not inheritance
 
-## 📋 Requirements
+## Requirements
 
 - Node.js ≥ 18.0.0
 - TypeScript ≥ 5.0.0 (for development)
 
-## 📄 License
+## License
 
 MIT
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -401,8 +404,9 @@ MIT
 5. Ensure all tests pass
 6. Submit a pull request
 
-## 🔗 Related
+## See also
 
 - [@synet/unit](https://github.com/synthetism/unit) - Core Unit Architecture framework
 - [@synet/fs](https://github.com/synthetism/fs) - File system operations with Unit Architecture
-- [SYNET Documentation](https://docs.synthetism.ai) - Complete SYNET ecosystem documentation
+- [@synet/ai](https://github.com/synthetism/ai) - AI Operator unit - control your units with AI.
+- [JOIN SYNET](https://synthetism.ai) 

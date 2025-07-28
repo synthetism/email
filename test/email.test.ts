@@ -22,7 +22,6 @@ describe("Email Unit", () => {
       });
 
       expect(email.dna.id).toBe("email");
-      expect(email.dna.version).toBe("1.0.0");
       expect(email.getProviderType()).toBe("smtp");
       expect(email.capabilities()).toContain("send");
       expect(email.capabilities()).toContain("validateEmail");

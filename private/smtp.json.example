@@ -1,0 +1,12 @@
+{
+    "SMTP_HOST": "email-smtp.host.com",
+    "SMTP_PORT": 587,
+    "SMTP_USER": "your-smtp-username",
+    "SMTP_PASS": "your-smtp-password",
+    "SMTP_FROM": "email@from.com",
+    "SMTP_FROM_NAME": "[⊚] Synthetism",
+    "SMTP_SECURE": false,
+    "SMTP_TLS": false,
+    "SMTP_AUTH": false,
+    "SMTP_TO": "me@unit.archi"
+}
