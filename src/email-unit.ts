@@ -11,14 +11,15 @@ import {
   createUnitSchema,
 } from "@synet/unit";
 import type { IEmail, EmailMessage, EmailResult, EmailProviderType } from "./types.js";
-import { NodemailerSMTPEmail, type NodemailerSMTPConfig } from "./nodemailer-smtp.js";
+import { SMTPEmail, type SMTPConfig } from "./smtp.js";
+import { ResendEmail, type ResendConfig } from "./resend.js";
 
 /**
  * Email provider configuration union
  */
 export type EmailProviderOptions = {
-  smtp: NodemailerSMTPConfig;
-  resend: { apiKey: string };
+  smtp: SMTPConfig;
+  resend: ResendConfig;
 };
 
 /**
@@ -64,7 +65,7 @@ export class Email extends Unit<EmailProps> implements IEmail {
 
     // Validate provider-specific config
     if (config.type === 'smtp') {
-      const smtpOptions = config.options as NodemailerSMTPConfig;
+      const smtpOptions = config.options as SMTPConfig;
       if (!smtpOptions.host || !smtpOptions.port || !smtpOptions.auth) {
         throw new Error('[email] SMTP requires host, port, and auth configuration');
       }
@@ -193,9 +194,9 @@ When learned by other units:
   /**
    * Get configuration (without sensitive data) - following Doctrine 15: Enhanced Error Messages
    */
-  getConfig(): EmailConfig {
+  getConfig(): EmailConfig | undefined {
     if (this.props.providerType === 'smtp') {
-      const smtpOptions = this.props.providerOptions as NodemailerSMTPConfig;
+      const smtpOptions = this.props.providerOptions as SMTPConfig;
       return {
         type: 'smtp',
         options: {
@@ -206,20 +207,16 @@ When learned by other units:
           } : undefined,
         },
       };
-    } else if (this.props.providerType === 'resend') {
+    } 
+     if (this.props.providerType === 'resend') {
       return {
         type: 'resend',
         options: {
           apiKey: '***hidden***',
+          from: (this.props.providerOptions as ResendConfig).from,
         },
       };
-    }
-    
-    // Fallback (should not happen due to validation in create())
-    return {
-      type: this.props.providerType,
-      options: this.props.providerOptions,
-    } as EmailConfig;
+    }  
   }
 
   /**
@@ -249,10 +246,10 @@ When learned by other units:
 
     switch (type) {
       case "smtp":
-        return new NodemailerSMTPEmail(options as NodemailerSMTPConfig);
+        return new SMTPEmail(options as SMTPConfig);
 
       case "resend":
-        throw new Error("[email] Resend provider not yet implemented. Learn from: ResendEmail.create().teach()");
+        return new ResendEmail(options as ResendConfig);
 
       default:
         throw new Error(`[email] Unsupported email provider: ${type}. Available: smtp, resend`);

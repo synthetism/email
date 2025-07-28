@@ -4,7 +4,7 @@
  * Verify production-ready email sending with SYNET patterns
  */
 
-import { NodemailerSMTPEmail } from "../src/index.js";
+import { SMTPEmail } from "../src/index.js";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
@@ -23,7 +23,7 @@ async function testNodemailerAdapter() {
 
     // Create nodemailer adapter
     console.log("\n2. Creating Nodemailer SMTP adapter...");
-    const adapter = new NodemailerSMTPEmail({
+    const adapter = new SMTPEmail({
       host: credentials.SMTP_HOST,
       port: credentials.SMTP_PORT,
       secure: credentials.SMTP_PORT === 465, // SSL for 465, STARTTLS for others
@@ -37,7 +37,7 @@ async function testNodemailerAdapter() {
 
     // Test validation
     console.log("\n3. Testing email validation...");
-    const testEmail = "0en@synthetism.com";
+    const testEmail = credentials.SMTP_TO;
     const isValid = adapter.validateEmail(testEmail);
     console.log(`   📧 ${testEmail}: ${isValid ? "✅ Valid" : "❌ Invalid"}`);
 
@@ -51,7 +51,7 @@ async function testNodemailerAdapter() {
       console.log("\n5. Sending test email...");
       const result = await adapter.send({
         to: testEmail,
-        from: credentials.FROM_EMAIL,
+        from: credentials.SMTP_FROM,
         subject: "🧠 SYNET Nodemailer Adapter Test",
         text: `
 Hello from SYNET!

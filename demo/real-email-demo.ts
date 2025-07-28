@@ -12,7 +12,7 @@
     });* Demonstrates actual email sending using real SMTP credentials
  */
 
-import { Email, NodemailerSMTPEmail } from "../src/index.js";
+import { Email, SMTPEmail } from "../src/index.js";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
@@ -28,11 +28,11 @@ async function demonstrateRealEmailSending() {
     const credentials = JSON.parse(credentialsData);
     
     console.log(`✅ Loaded credentials for: ${credentials.SMTP_HOST}`);
-    console.log(`📧 From email: ${credentials.FROM_EMAIL}\n`);
+    console.log(`📧 From email: ${credentials.SMTP_FROM}\n`);
 
     // Test nodemailer adapter directly first
-    console.log("2. Testing Nodemailer SMTP adapter directly...");
-    const smtpAdapter = new NodemailerSMTPEmail({
+    console.log("2. Testing SMTP adapter directly...");
+    const smtpAdapter = new SMTPEmail({
       host: credentials.SMTP_HOST,
       port: credentials.SMTP_PORT,
       secure: credentials.SMTP_PORT === 465, // SSL for 465, STARTTLS for others
@@ -43,7 +43,7 @@ async function demonstrateRealEmailSending() {
     });
 
     console.log("🔍 Validating test email addresses...");
-    const testEmail = "0en@synthetism.com";
+    const testEmail = credentials.SMTP_TO;
     const isValid = smtpAdapter.validateEmail(testEmail);
     console.log(`   ✅ ${testEmail}: ${isValid ? "Valid" : "Invalid"}`);
 
@@ -55,7 +55,7 @@ async function demonstrateRealEmailSending() {
       console.log("\n📤 Sending test email via nodemailer adapter...");
       const adapterResult = await smtpAdapter.send({
         to: testEmail,
-        from: credentials.FROM_EMAIL,
+        from: credentials.SMTP_FROM,
         subject: "🧠 SYNET Email Unit Test - Nodemailer Adapter",
         text: `Hello from SYNET Email Unit!
 
@@ -124,7 +124,7 @@ SYNET Email System`,
       console.log("\n📤 Sending test email via Email Unit...");
       const unitResult = await emailUnit.send({
         to: testEmail,
-        from: credentials.FROM_EMAIL,
+        from: credentials.SMTP_FROM,
         subject: "🧬 SYNET Email Unit Test - Full Unit Architecture",
         text: `Hello from SYNET Email Unit Architecture!
 

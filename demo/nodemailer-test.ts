@@ -59,8 +59,8 @@ async function testNodemailer() {
     console.log("\n4. Sending test email...");
     try {
       const result = await transporter.sendMail({
-        from: `"SYNET Test" <${credentials.FROM_EMAIL}>`,
-        to: "0en@synthetism.com",
+        from: `"SYNET Test" <${credentials.SMTP_FROM}>`,
+        to: credentials.SMTP_TO,
         subject: "🧠 SYNET Email Test via Nodemailer",
         text: `
 Hello from SYNET!

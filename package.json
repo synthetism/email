@@ -1,7 +1,7 @@
 {
   "name": "@synet/email",
   "version": "1.0.0",
-  "description": "Zero-dependency, secure email sending library.",
+  "description": "Zero-dependency, secure, multi-provider email unit following Unit Architecture principles. Supports SMTP, AWS SES, and Resend.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -16,6 +16,7 @@
       "require": "./dist/index.js"
     }
   },
+  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/synthetism/email.git"
@@ -30,6 +31,7 @@
     "demo:real": "npx tsx demo/real-email-demo.ts",
     "demo:nodemailer": "npx tsx demo/nodemailer-test.ts",
     "demo:adapter": "npx tsx demo/nodemailer-adapter-test.ts",
+    "demo:resend": "npx tsx demo/resend-test.ts",
     "clean": "rimraf dist",
     "lint": "biome lint ./src",
     "lint:fix": "biome lint --write ./src",

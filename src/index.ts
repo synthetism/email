@@ -6,7 +6,7 @@
 
 export * from './types.js';
 export * from './smtp.js';
-export * from './nodemailer-smtp.js';
+export * from './resend.js';
 export * from './email-unit.js';
 
 // Main Email Unit
@@ -28,3 +28,4 @@ export type {
 
 // Adapters (for direct use if needed)
 export { SMTPEmail, type SMTPConfig } from "./smtp.js";
+export { ResendEmail, type ResendConfig } from "./resend.js";
