@@ -7,10 +7,10 @@
 export * from './types.js';
 export * from './smtp.js';
 export * from './resend.js';
-export * from './email-unit.js';
+export * from './email.unit.js';
 
 // Main Email Unit
-export { Email, VERSION } from "./email-unit.js";
+export { Email, VERSION } from "./email.unit.js";
 
 // Types
 export type {
@@ -24,7 +24,7 @@ export type {
 export type {
   EmailConfig,
   EmailProviderOptions,
-} from "./email-unit.js";
+} from "./email.unit.js";
 
 // Adapters (for direct use if needed)
 export { SMTPEmail, type SMTPConfig } from "./smtp.js";
