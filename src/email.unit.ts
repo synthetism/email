@@ -1,22 +1,26 @@
 /**
- * Email Unit - Simple, robust email sending following SYNET Unit Architecture v1.0.6
+ * Email Unit - Simple, robust email sending following SYNET Unit Architecture v1.0.7
  * 
- * Enhanced with AI tool schemas for intelligent email operations.
- * Following Doctrine v1.0.6: Props contain everything, zero dependencies, teach/learn paradigm
+ * Enhanced with consciousness trinity pattern for intelligent email operations.
+ * Following Doctrine v1.0.7: Consciousness trinity (Capabilities + Schema + Validator)
  */
 
 import {
   type TeachingContract,
   Unit,
+  type UnitCore,
   type UnitProps,
   createUnitSchema,
+  Capabilities,
+  Schema,
+  Validator
 } from "@synet/unit";
 import type { IEmail, EmailMessage, EmailResult, EmailProviderType } from "./types.js";
 import { SMTPEmail, type SMTPConfig } from "./smtp.js";
 import { ResendEmail, type ResendConfig } from "./resend.js";
 
 
-export const VERSION = '1.0.1'
+export const VERSION = '1.0.2'
 /**
  * Email provider configuration union
  */
@@ -90,6 +94,122 @@ export class Email extends Unit<EmailProps> implements IEmail {
   }
 
   // ==========================================
+  // CONSCIOUSNESS TRINITY (v1.0.7)
+  // ==========================================
+
+  /**
+   * Build consciousness trinity - creates living instances once
+   */
+  protected build(): UnitCore {
+    const capabilities = Capabilities.create(this.dna.id, {
+      validateEmail: (...args: unknown[]) => this.validateEmail(args[0] as string),
+      checkConnection: (...args: unknown[]) => this.checkConnection(),
+      send: (...args: unknown[]) => this.send(args[0] as EmailMessage)
+    });
+
+    const schema = Schema.create(this.dna.id, {
+      validateEmail: {
+        name: 'validateEmail',
+        description: 'Validate email address format',
+        parameters: {
+          type: 'object',
+          properties: {
+            email: {
+              type: 'string',
+              description: 'Email address to validate (e.g., "user@example.com")'
+            }
+          },
+          required: ['email']
+        },
+        response: { type: 'boolean' }
+      },
+      checkConnection: {
+        name: 'checkConnection',
+        description: 'Test connection to email provider',
+        parameters: {
+          type: 'object',
+          properties: {},
+          required: []
+        },
+        response: { type: 'boolean' }
+      },
+      send: {
+        name: 'send',
+        description: 'Send email message via configured provider',
+        parameters: {
+          type: 'object',
+          properties: {
+            to: {
+              type: 'string',
+              description: 'Recipient email address or comma-separated list'
+            },
+            from: {
+              type: 'string', 
+              description: 'Sender email address'
+            },
+            subject: {
+              type: 'string',
+              description: 'Email subject line'
+            },
+            text: {
+              type: 'string',
+              description: 'Plain text email content (optional)'
+            },
+            html: {
+              type: 'string',
+              description: 'HTML email content (optional)'
+            },
+            cc: {
+              type: 'string',
+              description: 'CC recipients (optional)'
+            },
+            bcc: {
+              type: 'string',
+              description: 'BCC recipients (optional)'
+            },
+            replyTo: {
+              type: 'string',
+              description: 'Reply-to email address (optional)'
+            }
+          },
+          required: ['to', 'from', 'subject']
+        },
+        response: { type: 'object' }
+      }
+    });
+
+    const validator = Validator.create({
+      unitId: this.dna.id,
+      capabilities,
+      schema,
+      strictMode: false
+    });
+
+    return { capabilities, schema, validator };
+  }
+
+  /**
+   * Get capabilities consciousness - returns living instance
+   */
+  capabilities(): Capabilities {
+    return this._unit.capabilities;
+  }
+
+  /**
+   * Get schema consciousness - returns living instance
+   */
+  schema(): Schema {
+    return this._unit.schema;
+  }
+
+  /**
+   * Get validator consciousness - returns living instance
+   */
+  validator(): Validator {
+    return this._unit.validator;
+  }
+
+  // ==========================================
   // NATIVE EMAIL METHODS (Doctrine 6: Direct methods for native operations)
   // ==========================================
 
@@ -134,86 +254,14 @@ export class Email extends Unit<EmailProps> implements IEmail {
   // ==========================================
 
   /**
-   * TEACH - Provide email capabilities to other units with AI tool schemas (v1.0.6)
+   * TEACH - Provide email capabilities to other units with consciousness trinity (v1.0.7)
    */
   teach(): TeachingContract {
     return {
       unitId: this.props.dna.id,
-      capabilities: {
-        validateEmail: (...args: unknown[]) =>
-          this.validateEmail(args[0] as string),
-        checkConnection: () => this.checkConnection(),
-        send: (...args: unknown[]) =>
-          this.send(args[0] as EmailMessage),
-      },
-      // NEW in v1.0.6: Tool schemas for AI integration
-      tools: {
-        validateEmail: {
-          name: 'validateEmail',
-          description: 'Validate email address format',
-          parameters: {
-            type: 'object',
-            properties: {
-              email: {
-                type: 'string',
-                description: 'Email address to validate (e.g., "user@example.com")'
-              }
-            },
-            required: ['email']
-          }
-        },
-        checkConnection: {
-          name: 'checkConnection',
-          description: 'Test connection to email provider',
-          parameters: {
-            type: 'object',
-            properties: {},
-            required: []
-          }
-        },
-        send: {
-          name: 'send',
-          description: 'Send email message via configured provider',
-          parameters: {
-            type: 'object',
-            properties: {
-              to: {
-                type: 'string',
-                description: 'Recipient email address or comma-separated list'
-              },
-              from: {
-                type: 'string', 
-                description: 'Sender email address'
-              },
-              subject: {
-                type: 'string',
-                description: 'Email subject line'
-              },
-              text: {
-                type: 'string',
-                description: 'Plain text email content (optional)'
-              },
-              html: {
-                type: 'string',
-                description: 'HTML email content (optional)'
-              },
-              cc: {
-                type: 'string',
-                description: 'CC recipients (optional)'
-              },
-              bcc: {
-                type: 'string',
-                description: 'BCC recipients (optional)'
-              },
-              replyTo: {
-                type: 'string',
-                description: 'Reply-to email address (optional)'
-              }
-            },
-            required: ['to', 'from', 'subject']
-          }
-        }
-      }
+      capabilities: this._unit.capabilities,
+      schema: this._unit.schema,
+      validator: this._unit.validator
     };
   }
 
@@ -221,13 +269,9 @@ export class Email extends Unit<EmailProps> implements IEmail {
     return `Email[${this.props.dna.id}] via ${this.props.providerType}`;
   }
 
-  capabilities(): string[] {
-    return ["validateEmail", "checkConnection", "send"];
-  }
-
   help(): void {
     console.log(`
-📧 Email Unit - Simple, robust email sending (v1.0.6)
+📧 Email Unit - Simple, robust email sending (v1.0.7)
 
 Provider: ${this.props.providerType}
 Native Capabilities:
@@ -246,11 +290,11 @@ Usage:
     html: '<h1>HTML message</h1>'
   });
 
-Unit Architecture (learn/teach):
+Unit Architecture v1.0.7 (consciousness trinity):
   otherUnit.learn([email.teach()]);
   await otherUnit.execute('${this.props.dna.id}.send', emailMessage);
 
-AI Integration (NEW in v1.0.6):
+AI Integration via consciousness trinity:
   const ai = AI.create({ type: 'openai', options: { apiKey: 'sk-...' } });
   ai.learn([email.teach()]);
   

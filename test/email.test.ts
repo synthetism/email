@@ -4,6 +4,7 @@
 
 import { describe, it, expect } from "vitest";
 import { Email } from "../src/index.js";
+import { Capabilities, Schema, Validator } from "@synet/unit";
 
 describe("Email Unit", () => {
   describe("Unit Creation", () => {
@@ -23,9 +24,9 @@ describe("Email Unit", () => {
 
       expect(email.dna.id).toBe("email");
       expect(email.getProviderType()).toBe("smtp");
-      expect(email.capabilities()).toContain("send");
-      expect(email.capabilities()).toContain("validateEmail");
-      expect(email.capabilities()).toContain("checkConnection");
+      expect(email.capabilities().has("send")).toBe(true);
+      expect(email.capabilities().has("validateEmail")).toBe(true);
+      expect(email.capabilities().has("checkConnection")).toBe(true);
     });
 
     it("should validate configuration and throw on errors", () => {
@@ -57,15 +58,16 @@ describe("Email Unit", () => {
       // Unit Architecture requirements
       expect(email.whoami()).toContain("Email");
       expect(email.dna.id).toBe("email");
-      expect(email.capabilities()).toBeInstanceOf(Array);
+      expect(email.capabilities()).toBeInstanceOf(Capabilities);
       expect(typeof email.teach).toBe("function");
       expect(typeof email.help).toBe("function");
       
       // Teaching contract
       const contract = email.teach();
       expect(contract.unitId).toBe("email");
-      expect(contract.capabilities).toHaveProperty("send");
-      expect(contract.capabilities).toHaveProperty("validateEmail");
+      expect(contract.capabilities).toBeInstanceOf(Capabilities);
+      expect(contract.schema).toBeInstanceOf(Schema);
+      expect(contract.validator).toBeInstanceOf(Validator);
     });
   });
 
@@ -94,7 +96,7 @@ describe("Email Unit", () => {
   });
 
   describe("Unit Learning", () => {
-    it("should teach capabilities to other units", () => {
+    it("should teach capabilities to other units", async () => {
       const email = Email.create({
         type: "smtp",
         options: {
@@ -106,13 +108,18 @@ describe("Email Unit", () => {
 
       const contract = email.teach();
       
-      // Should provide email capabilities
-      expect(contract.capabilities.validateEmail).toBeInstanceOf(Function);
-      expect(contract.capabilities.send).toBeInstanceOf(Function);
-      expect(contract.capabilities.checkConnection).toBeInstanceOf(Function);
+      // Should provide consciousness trinity
+      expect(contract.capabilities).toBeInstanceOf(Capabilities);
+      expect(contract.schema).toBeInstanceOf(Schema);
+      expect(contract.validator).toBeInstanceOf(Validator);
       
-      // Test validation capability
-      const result = contract.capabilities.validateEmail("test@example.com");
+      // Test capabilities access through consciousness
+      expect(contract.capabilities.has("validateEmail")).toBe(true);
+      expect(contract.capabilities.has("send")).toBe(true);
+      expect(contract.capabilities.has("checkConnection")).toBe(true);
+      
+      // Test capability execution through validator
+      const result = await contract.validator.execute("validateEmail", "test@example.com");
       expect(result).toBe(true);
     });
   });

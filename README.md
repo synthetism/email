@@ -15,7 +15,7 @@
    |  `--'  | |  |\   | |  |     |  |           
     \______/  |__| \__| |__|     |__|           
                                                 
-version: 1.0.1                                   
+version: 1.0.2                                  
 ```
 Production ready, secure email sending library following Unit Architecture principles.
 
